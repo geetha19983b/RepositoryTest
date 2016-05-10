@@ -1,0 +1,19 @@
+create table Employee(
+EmpId int not null,
+EmpName varchar(50),
+EmpAlias1 varchar(50),
+EmpAlias2 varchar(50),
+EmpAlias3 varchar(50),
+)
+
+create procedure spGetAllEmployees1
+as 
+begin
+Select * from Employee
+end
+
+create procedure spGetFilterEmployees(@empid int)
+as
+begin
+Select * from Employee where EmpId = @empid
+end
