@@ -17,3 +17,40 @@ as
 begin
 Select * from Employee where EmpId = @empid
 end
+
+CREATE PROCEDURE [dbo].[usp_Insert_Employee]
+	-- Add the parameters for the stored procedure here
+	@EmpId as int,
+	@EmpName as varchar(50),
+    @EmpAlias1 as varchar(50),
+    @EmpAlias2 as varchar(50),
+	@EmpAlias3 as varchar(50),
+
+
+	@ErrorCode int output
+AS
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    INSERT INTO [dbo].[Employee]
+           ([EmpId]
+           ,[EmpName]
+           ,[EmpAlias1]
+           ,[EmpAlias2]
+           ,[EmpAlias3])
+         
+     VALUES
+           (@EmpId
+           ,@EmpName
+           ,@EmpAlias1
+           ,@EmpAlias2
+           ,@EmpAlias3)
+         
+
+
+SET @ErrorCode = @@ERROR
+END
+
+GO
