@@ -12,7 +12,7 @@ namespace RepositoryTest.Controllers
     {
 
 
-        EfRepositoryBase<Employee,SampleEntities> efrepobj = new EfRepositoryBase<Employee,SampleEntities>();
+        EfRepositoryBase<SampleEntities> efrepobj = new EfRepositoryBase<SampleEntities>();
         //
         // GET: /Home/
         public ActionResult Index()
@@ -37,7 +37,7 @@ namespace RepositoryTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                efrepobj.Insert(employee);
+                efrepobj.Insert<Employee>(employee);
                 efrepobj.Save();
                 
             }
@@ -55,7 +55,7 @@ namespace RepositoryTest.Controllers
         public ActionResult Edit(Employee emp)
         {
             string query = "update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId;
-            efrepobj.ExecuteNonQuery("update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId);
+            efrepobj.ExecuteNonQuery("update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId,null);
             return RedirectToAction("Index");
         }
 	}
