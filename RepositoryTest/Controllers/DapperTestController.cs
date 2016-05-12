@@ -11,7 +11,7 @@ namespace RepositoryTest.Controllers
 {
     public class DapperTestController : Controller
     {
-        IGenericDataAccess dapperobj = new DapperDataAccess();
+        IGenericDataAccess dapperobj = new DapperDataAccess("SampleDB");
         //
         // GET: /DapperTest/
         public ActionResult Index()

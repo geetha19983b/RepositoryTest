@@ -17,9 +17,16 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
 
        // protected static IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
 
+          public static string ConString
+          {
+              get;
+              set;
+          }
+
         public static IDbConnection GetDbConnection()
         {
-            IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+           // IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+            IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings[ConString].ConnectionString);
             return _connection;
         }
 

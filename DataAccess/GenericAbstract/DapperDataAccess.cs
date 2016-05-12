@@ -12,7 +12,10 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
     public class DapperDataAccess : DataAccessCon, IGenericDataAccess
     {
 
-
+        public DapperDataAccess(string conString)
+        {
+            ConString = conString;
+        }
         public int ExecuteNonQuery(string query, object parameters, string type = null)
         {
             if (!string.IsNullOrEmpty(type))
