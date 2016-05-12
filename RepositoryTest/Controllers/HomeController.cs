@@ -3,16 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DataAccess.GenericAbstract;
+using Infosys.FoundationLibrary.DataAccess.GenericAbstract;
 using RepositoryTest.Models;
+using Infosys.FoundationLibrary.DataAccess.GenericInterface;
 
 namespace RepositoryTest.Controllers
 {
     public class HomeController : Controller
     {
-
-
-        EfRepositoryBase<SampleEntities> efrepobj = new EfRepositoryBase<SampleEntities>();
+       
+        private static IDbFactory<SampleEntities> dbFactory = new DbFactory<SampleEntities>();
+        private readonly IUnitOfWork<SampleEntities> unitOfWork = new UnitOfWork<SampleEntities>(dbFactory);
+        //IGenericDataAccess efrepobj = new EfDataAccess<SampleEntities>(dbFactory);
+        
+        //public HomeController(IUnitOfWork unitOfWork)
+        //{
+        //    this.unitOfWork = unitOfWork;
+        //}
         //
         // GET: /Home/
         public ActionResult Index()
@@ -20,9 +27,9 @@ namespace RepositoryTest.Controllers
             
             //efrepobj.ExecuteScalar("update [Employees] set EmpAlias3 = 'John' where EmpId = 1");
 
-            IEnumerable<Employee> emps = efrepobj.ExecuteReader<Employee>("spGetAllEmployees1", null);
+            IEnumerable<Employee> emps = unitOfWork.EfRepDA.ExecuteReader<Employee>("spGetAllEmployees1", null);
             var mods = emps;
-            ViewBag.EmpCount = efrepobj.ExecuteScalar<int>("select count(*) from Employee", null);
+            ViewBag.EmpCount = unitOfWork.EfRepDA.ExecuteScalar<int>("select count(*) from Employee", null);
             return View(mods);
         }
         public ActionResult Create()
@@ -37,8 +44,9 @@ namespace RepositoryTest.Controllers
         {
             if (ModelState.IsValid)
             {
-                efrepobj.Insert<Employee>(employee);
-                efrepobj.Save();
+                unitOfWork.EfRepDA.Insert<Employee>(employee);
+                //efrepobj.Save();
+                unitOfWork.Commit();
                 
             }
             return RedirectToAction("Index");
@@ -46,7 +54,7 @@ namespace RepositoryTest.Controllers
         public ActionResult Edit(int id)
         {
 
-            Employee emp = efrepobj.ExecuteReader<Employee>("spGetFilterEmployees @p0", id).Single();
+            Employee emp = unitOfWork.EfRepDA.ExecuteReader<Employee>("spGetFilterEmployees @p0", id).Single();
             return View(emp);
 
         }
@@ -55,7 +63,7 @@ namespace RepositoryTest.Controllers
         public ActionResult Edit(Employee emp)
         {
             string query = "update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId;
-            efrepobj.ExecuteNonQuery("update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId,null);
+            unitOfWork.EfRepDA.ExecuteNonQuery("update Employee set EmpAlias3 = '" + emp.EmpAlias3 + "' where EmpId = " + emp.EmpId, null);
             return RedirectToAction("Index");
         }
 	}

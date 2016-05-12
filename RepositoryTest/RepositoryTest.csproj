@@ -173,9 +173,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+    <ProjectReference Include="..\DataAccess\Infosys.FoundationLibrary.DataAccess.csproj">
       <Project>{a0553ade-aa07-4a45-a0a9-f7eb551e08d6}</Project>
-      <Name>DataAccess</Name>
+      <Name>Infosys.FoundationLibrary.DataAccess</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

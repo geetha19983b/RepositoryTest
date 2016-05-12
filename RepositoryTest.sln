@@ -5,7 +5,7 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryTest", "RepositoryTest\RepositoryTest.csproj", "{BA1076CA-B9D4-46F2-97AF-6B1014277194}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{A0553ADE-AA07-4A45-A0A9-F7EB551E08D6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infosys.FoundationLibrary.DataAccess", "DataAccess\Infosys.FoundationLibrary.DataAccess.csproj", "{A0553ADE-AA07-4A45-A0A9-F7EB551E08D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

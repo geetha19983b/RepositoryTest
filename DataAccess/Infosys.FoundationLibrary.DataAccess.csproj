@@ -53,11 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GenericAbstract\DapperRepositoryBase.cs" />
+    <Compile Include="GenericAbstract\EfDataAccess.cs" />
+    <Compile Include="GenericAbstract\DapperDataAccess.cs" />
     <Compile Include="GenericAbstract\DataAccessConn.cs" />
-    <Compile Include="GenericAbstract\EfRepositoryBase.cs" />
-    <Compile Include="GenericInterface\IGenericRepository.cs" />
-    <Compile Include="GenericInterface\IRepositoryBase.cs" />
+    <Compile Include="GenericAbstract\DbFactory.cs" />
+    <Compile Include="GenericAbstract\Disposable.cs" />
+    <Compile Include="GenericAbstract\UnitOfWork.cs" />
+    <Compile Include="GenericInterface\IDbFactory.cs" />
+    <Compile Include="GenericInterface\IGenericDataAccess.cs" />
+    <Compile Include="GenericInterface\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

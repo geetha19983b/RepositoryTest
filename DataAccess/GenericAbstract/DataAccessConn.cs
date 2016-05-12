@@ -8,14 +8,20 @@ using Dapper;
 using System.Data.SqlClient;
 using System.Configuration;
 
-namespace DataAccess.GenericAbstract
+namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
 {
       public abstract class DataAccessCon
     {
         //private static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
-        private static readonly string conString = null;
+       // private static readonly string conString = null;
 
-        protected static IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+       // protected static IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+
+        public static IDbConnection GetDbConnection()
+        {
+            IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+            return _connection;
+        }
 
     }
 

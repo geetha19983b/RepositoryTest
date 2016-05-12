@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.GenericInterface
+namespace Infosys.FoundationLibrary.DataAccess.GenericInterface
 {
-    interface IGenericRepository
+    public interface IGenericDataAccess
     {
-        int ExecuteNonQuery(string query, object parameters, string type);
-        IEnumerable<TResult> ExecuteReader<TResult>(string query, object parameters, string type);
+        int ExecuteNonQuery(string query, object parameters, string type = null);
+        IEnumerable<TResult> ExecuteReader<TResult>(string query, object parameters, string type = null);
         TResult ExecuteScalar<TResult>(string query, object parameters);
 
 

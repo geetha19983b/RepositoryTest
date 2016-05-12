@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using DataAccess.GenericAbstract;
+using Infosys.FoundationLibrary.DataAccess.GenericAbstract;
 using RepositoryTest.Models;
+using Infosys.FoundationLibrary.DataAccess.GenericInterface;
 
 namespace RepositoryTest.Controllers
 {
     public class DapperTestController : Controller
     {
-        DapperRepositoryBase dapperobj = new DapperRepositoryBase();
+        IGenericDataAccess dapperobj = new DapperDataAccess();
         //
         // GET: /DapperTest/
         public ActionResult Index()
