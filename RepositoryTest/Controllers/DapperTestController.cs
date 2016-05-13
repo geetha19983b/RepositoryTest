@@ -47,15 +47,31 @@ namespace RepositoryTest.Controllers
             if (ModelState.IsValid)
             {
 
-                var param = new { EmpId = employee.EmpId, 
-                                  EmpName= employee.EmpName,
-                                  EmpAlias1 = employee.EmpAlias1,
-                                  EmpAlias2 = employee.EmpAlias2,
-                                  EmpAlias3 = employee.EmpAlias3,
-                                  ErrorCode = 0
-                };
+                //var param = new { EmpId = employee.EmpId, 
+                //                  EmpName= employee.EmpName,
+                //                  EmpAlias1 = employee.EmpAlias1,
+                //                  EmpAlias2 = employee.EmpAlias2,
+                //                  EmpAlias3 = employee.EmpAlias3,
+                //                  ErrorCode = 0
+                //};
 
-                dapperobj.ExecuteNonQuery("usp_Insert_Employee", param,"SP");
+                //dapperobj.ExecuteNonQuery("usp_Insert_Employee", param,"SP");
+
+                List<object> returnobj = new List<object>();
+                List<ParamterTemplate> parms = new List<ParamterTemplate>();
+                parms.Add(new ParamterTemplate("EmpId",employee.EmpId, typeof(System.Int32), "Input"));
+                parms.Add(new ParamterTemplate("EmpName", employee.EmpName, typeof(System.String), "Input"));
+                parms.Add(new ParamterTemplate("EmpAlias1", employee.EmpAlias1, typeof(System.String), "Input"));
+                parms.Add(new ParamterTemplate("EmpAlias2", employee.EmpAlias2, typeof(System.String), "Input"));
+                parms.Add(new ParamterTemplate("EmpAlias3", employee.EmpAlias3, typeof(System.String), "Input"));
+                parms.Add(new ParamterTemplate("ReturnValue", "0", typeof(System.Int32), "Output"));
+                parms.Add(new ParamterTemplate("ErrorCode", "0", typeof(System.Int32), "Output"));
+                dapperobj.ExecuteNonQuery<ParamterTemplate>("usp_Insert_Employee_retvalue", parms, out returnobj,"SP");
+
+               
+                TempData["ReturnValue"] = returnobj[0].ToString();
+                TempData["ErrorCode"] = returnobj[1].ToString();
+                //ViewBag.ErrorCode = returnobj[1].ToString();
 
             }
             return RedirectToAction("Index");

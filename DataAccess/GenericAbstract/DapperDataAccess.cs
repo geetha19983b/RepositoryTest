@@ -10,8 +10,8 @@ using Dapper;
 
 namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
 {
-    
-    public class DapperDataAccess : DataAccessCon, IGenericDataAccess 
+
+    public class DapperDataAccess : DataAccessCon, IGenericDataAccess
     {
 
         public DapperDataAccess(string conString)
@@ -44,7 +44,7 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
                 using (var _connection = GetDbConnection())
                 {
 
-                   return _connection.Query<TResult>(query, parameters, commandType: CommandType.StoredProcedure).ToList();
+                    return _connection.Query<TResult>(query, parameters, commandType: CommandType.StoredProcedure).ToList();
                 }
             }
             else
@@ -56,8 +56,8 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
             }
         }
 
-        
-       
+
+
 
         public TResult ExecuteScalar<TResult>(string query, object parameters)
         {
@@ -102,40 +102,75 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
             throw new NotImplementedException();
         }
 
-
-        public IEnumerable<TResult> ExecuteReader<TResult, T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class
+        public int ExecuteNonQuery<T>(string query, List<T> parameters, out List<object> returnobj, string type = null)
         {
-
             returnobj = new List<object>();
             using (var _connection = GetDbConnection())
             {
-               
                 List<ParamterTemplate> listparms = parameters.OfType<ParamterTemplate>().ToList();
                 var parms = new DynamicParameters();
                 listparms.ForEach(a =>
                 {
                     if (a.ParameterDirection == "Input")
                     {
-                        parms.Add(a.ParamterName, a.ParamterValue,null, ParameterDirection.Input);
+                        parms.Add(a.ParamterName, a.ParamterValue, null, ParameterDirection.Input);
                     }
                     else
                     {
                         DbType t = DbTypeConverter.TypeToDbType(a.ParameterType);
-                        parms.Add(a.ParamterName, null,t, ParameterDirection.Output);
+                        parms.Add(a.ParamterName, null, t, ParameterDirection.Output);
                     }
-                    
+
                 });
 
-                var grid = _connection.QueryMultiple(query,parms,commandType: CommandType.StoredProcedure);
-                //var result = _connection.Query<TResult>(query, parms, commandType: CommandType.StoredProcedure).ToList();
 
-                var result = grid.Read<TResult>().ToList();
-                
+                var result = _connection.Execute(query, parms, commandType: CommandType.StoredProcedure);
                 foreach (var x in listparms)
                 {
                     if (x.ParameterDirection == "Output")
                     {
-                        
+
+                        returnobj.Add(parms.Get<dynamic>(x.ParamterName));
+                    }
+                }
+                return result;
+            }
+
+
+        }
+        public IEnumerable<TResult> ExecuteReader<TResult, T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class
+        {
+
+            returnobj = new List<object>();
+            using (var _connection = GetDbConnection())
+            {
+
+                List<ParamterTemplate> listparms = parameters.OfType<ParamterTemplate>().ToList();
+                var parms = new DynamicParameters();
+                listparms.ForEach(a =>
+                {
+                    if (a.ParameterDirection == "Input")
+                    {
+                        parms.Add(a.ParamterName, a.ParamterValue, null, ParameterDirection.Input);
+                    }
+                    else
+                    {
+                        DbType t = DbTypeConverter.TypeToDbType(a.ParameterType);
+                        parms.Add(a.ParamterName, null, t, ParameterDirection.Output);
+                    }
+
+                });
+
+                var grid = _connection.QueryMultiple(query, parms, commandType: CommandType.StoredProcedure);
+                //var result = _connection.Query<TResult>(query, parms, commandType: CommandType.StoredProcedure).ToList();
+
+                var result = grid.Read<TResult>().ToList();
+
+                foreach (var x in listparms)
+                {
+                    if (x.ParameterDirection == "Output")
+                    {
+
                         returnobj.Add(grid.Read<dynamic>().FirstOrDefault());
                     }
                 }

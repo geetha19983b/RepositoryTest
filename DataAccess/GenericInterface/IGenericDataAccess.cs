@@ -10,6 +10,7 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericInterface
     public interface IGenericDataAccess
     {
         int ExecuteNonQuery(string query, object parameters, string type = null);
+        int ExecuteNonQuery<T>(string query, List<T> parameters, out List<object> returnobj, string type = null);
         IEnumerable<TResult> ExecuteReader<TResult>(string query, object parameters, string type = null);
         IEnumerable<TResult> ExecuteReader<TResult, T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class;
         TResult ExecuteScalar<TResult>(string query, object parameters);

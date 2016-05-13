@@ -104,5 +104,11 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
         {
             throw new NotImplementedException();
         }
+
+
+        public int ExecuteNonQuery<T>(string query, List<T> parameters, out List<object> returnobj, string type = null)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
