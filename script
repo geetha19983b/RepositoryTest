@@ -54,3 +54,34 @@ SET @ErrorCode = @@ERROR
 END
 
 GO
+
+
+
+alter PROCEDURE [dbo].[GetEmp]        
+       @EmpId INT                    
+      ,@RecordCount INT OUTPUT        
+AS        
+BEGIN  
+
+--declare @EmpId INT  
+--declare  @RecordCount INT
+
+
+	DECLARE @SQLString nvarchar(4000)
+	DECLARE @ParmDefinition nvarchar(500);      
+	
+
+	SET @SQLString =N'SELECT @RecordCountout=COUNT(*) FROM Employee' +' ' 
+	SET @ParmDefinition = N'@RecordCountout INT OUTPUT' 
+	SET @SQLString = @SQLString+'select * from Employee where EmpId=' +cast(@EmpId as varchar(10))
+  
+	exec sp_executesql  @SQLString,@ParmDefinition,@RecordCountout=@RecordCount OUTPUT;        
+      
+	print  @SQLString 
+	    
+	SELECT @RecordCount as '@RecordCountout' 
+
+end
+
+declare  @RecordCount int
+exec [GetEmp] 1,@RecordCount=@RecordCount output
