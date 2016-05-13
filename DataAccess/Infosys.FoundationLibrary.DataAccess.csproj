@@ -53,11 +53,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericAbstract\DbTypeConverter.cs" />
     <Compile Include="GenericAbstract\EfDataAccess.cs" />
     <Compile Include="GenericAbstract\DapperDataAccess.cs" />
     <Compile Include="GenericAbstract\DataAccessConn.cs" />
     <Compile Include="GenericAbstract\DbFactory.cs" />
     <Compile Include="GenericAbstract\Disposable.cs" />
+    <Compile Include="GenericAbstract\ParameterTemplate.cs" />
     <Compile Include="GenericAbstract\UnitOfWork.cs" />
     <Compile Include="GenericInterface\IDbFactory.cs" />
     <Compile Include="GenericInterface\IGenericDataAccess.cs" />

@@ -12,10 +12,7 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
 {
       public abstract class DataAccessCon
     {
-        //private static readonly string ConnectionString = ConfigurationManager.ConnectionStrings["myconnectionstring"].ConnectionString;
-       // private static readonly string conString = null;
-
-       // protected static IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+      
 
           public static string ConString
           {
@@ -25,7 +22,7 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
 
         public static IDbConnection GetDbConnection()
         {
-           // IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings["SampleDB"].ConnectionString);
+      
             IDbConnection _connection = new SqlConnection(ConfigurationManager.ConnectionStrings[ConString].ConnectionString);
             return _connection;
         }

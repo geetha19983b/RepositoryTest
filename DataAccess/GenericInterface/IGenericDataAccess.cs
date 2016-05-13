@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using  Infosys.FoundationLibrary.DataAccess.GenericAbstract;
 namespace Infosys.FoundationLibrary.DataAccess.GenericInterface
 {
+   
     public interface IGenericDataAccess
     {
         int ExecuteNonQuery(string query, object parameters, string type = null);
         IEnumerable<TResult> ExecuteReader<TResult>(string query, object parameters, string type = null);
+        IEnumerable<TResult> ExecuteReader<TResult, T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class;
         TResult ExecuteScalar<TResult>(string query, object parameters);
 
 
