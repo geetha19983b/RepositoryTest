@@ -28,24 +28,15 @@ namespace RepositoryTest.Models
         }
     
         public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
-    
-        public virtual ObjectResult<Employee> GetEmp(Nullable<int> empId, ObjectParameter recordCount)
+
+   
+        public virtual ObjectResult<GetEmp_Result> GetEmp(Nullable<int> empId, ObjectParameter recordCount)
         {
             var empIdParameter = empId.HasValue ?
                 new ObjectParameter("EmpId", empId) :
                 new ObjectParameter("EmpId", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Employee>("GetEmp", empIdParameter, recordCount);
-        }
-    
-        public virtual ObjectResult<Employee> GetEmp(Nullable<int> empId, ObjectParameter recordCount, MergeOption mergeOption)
-        {
-            var empIdParameter = empId.HasValue ?
-                new ObjectParameter("EmpId", empId) :
-                new ObjectParameter("EmpId", typeof(int));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Employee>("GetEmp", mergeOption, empIdParameter, recordCount);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEmp_Result>("GetEmp", empIdParameter, recordCount);
         }
     }
 }

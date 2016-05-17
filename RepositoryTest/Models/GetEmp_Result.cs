@@ -13,6 +13,10 @@ namespace RepositoryTest.Models
     
     public partial class GetEmp_Result
     {
-        public Nullable<int> RecordCount { get; set; }
+        public Nullable<int> EmpId { get; set; }
+        public string EmpName { get; set; }
+        public string EmpAlias1 { get; set; }
+        public string EmpAlias2 { get; set; }
+        public string EmpAlias3 { get; set; }
     }
 }

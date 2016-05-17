@@ -121,9 +121,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddOnCodeDetails.cs" />
-    <Compile Include="Models\Department.cs">
-      <DependentUpon>SampleEntities.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\Employee.cs">
       <DependentUpon>SampleEntities.tt</DependentUpon>
     </Compile>
@@ -167,6 +164,7 @@
     <Content Include="Views\DapperTest\Index.cshtml" />
     <Content Include="Views\DapperTest\Create.cshtml" />
     <Content Include="Views\DapperTest\Edit.cshtml" />
+    <Content Include="Views\Home\SP_Mul.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

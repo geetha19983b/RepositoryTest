@@ -4,14 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="SampleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="DepartmentID" />
-          </Key>
-          <Property Name="DepartmentID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="varchar" MaxLength="250" Nullable="false" />
-        </EntityType>
+    <Schema Namespace="SampleModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <!--Errors Found During Generation:
 warning 6002: The table/view 'Sample.dbo.Employee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="Employee">
@@ -29,7 +22,6 @@ warning 6002: The table/view 'Sample.dbo.Employee' does not have a primary key d
           <Parameter Name="RecordCount" Type="int" Mode="InOut" />
         </Function>
         <EntityContainer Name="SampleModelStoreContainer">
-          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [Employee].[EmpId] AS [EmpId], 
@@ -46,8 +38,7 @@ warning 6002: The table/view 'Sample.dbo.Employee' does not have a primary key d
       <Schema Namespace="SampleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="SampleEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Employees" EntityType="SampleModel.Employee" />
-          <EntitySet Name="Departments" EntityType="SampleModel.Department" />
-          <FunctionImport Name="GetEmp" EntitySet="Employees" ReturnType="Collection(SampleModel.Employee)">
+          <FunctionImport Name="GetEmp" ReturnType="Collection(SampleModel.GetEmp_Result)">
             <Parameter Name="EmpId" Mode="In" Type="Int32" />
             <Parameter Name="RecordCount" Mode="InOut" Type="Int32" />
           </FunctionImport>
@@ -62,15 +53,33 @@ warning 6002: The table/view 'Sample.dbo.Employee' does not have a primary key d
           <Property Name="EmpAlias2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="EmpAlias3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
         </EntityType>
-        <EntityType Name="Department">
-          <Key>
-            <PropertyRef Name="DepartmentID" />
-          </Key>
-          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
-        </EntityType>
         <ComplexType Name="GetEmp_Result">
-          <Property Type="Int32" Name="RecordCount" Nullable="true" />
+        <Property Type="Int32" Name="EmpId" Nullable="true" />
+          <Property Type="String" Name="EmpName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias2" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias3" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetEmp_Result1">
+          <Property Type="Int32" Name="EmpId" Nullable="true" />
+          <Property Type="String" Name="EmpName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias2" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias3" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetEmp_Result2">
+          <Property Type="Int32" Name="EmpId" Nullable="true" />
+          <Property Type="String" Name="EmpName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias2" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias3" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="GetEmp_Result3">
+          <Property Type="Int32" Name="EmpId" Nullable="true" />
+          <Property Type="String" Name="EmpName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias1" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias2" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmpAlias3" Nullable="true" MaxLength="50" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -89,15 +98,17 @@ warning 6002: The table/view 'Sample.dbo.Employee' does not have a primary key d
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Departments">
-            <EntityTypeMapping TypeName="SampleModel.Department">
-              <MappingFragment StoreEntitySet="Department">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GetEmp" FunctionName="SampleModel.Store.GetEmp" />
+          <FunctionImportMapping FunctionImportName="GetEmp" FunctionName="SampleModel.Store.GetEmp">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="SampleModel.GetEmp_Result">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpName" ColumnName="EmpName" />
+                <ScalarProperty Name="EmpAlias1" ColumnName="EmpAlias1" />
+                <ScalarProperty Name="EmpAlias2" ColumnName="EmpAlias2" />
+                <ScalarProperty Name="EmpAlias3" ColumnName="EmpAlias3" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

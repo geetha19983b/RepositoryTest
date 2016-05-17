@@ -1,0 +1,63 @@
+﻿@model IEnumerable<RepositoryTest.Models.GetEmp_Result>
+
+@{
+    ViewBag.Title = "SP_Mul";
+}
+
+<h2>SP_Mul</h2>
+<h4>Emp count @ViewBag.EmpCount</h4>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpAlias1)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpAlias2)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmpAlias3)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.RecordCount)
+        </th>*@
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpAlias1)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpAlias2)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.EmpAlias3)
+        </td>
+        @*<td>
+            @Html.DisplayFor(modelItem => item.RecordCount)
+        </td>*@
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+        </td>
+    </tr>
+}
+
+</table>

@@ -20,7 +20,7 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
             get;
             private set;
         }
-        protected TContext DbContext
+        public TContext DbContext
         {
             get { return _entities ?? (_entities = DbFactory.Init()); }
         }
@@ -38,7 +38,8 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
         public int ExecuteNonQuery(string query, object parameters, string type = null)
         {
 
-            return DbContext.Database.ExecuteSqlCommand(query, parameters);
+           return DbContext.Database.ExecuteSqlCommand(query, parameters);
+           
         }
 
 
