@@ -171,10 +171,59 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
                     if (x.ParameterDirection == "Output")
                     {
 
-                        returnobj.Add(grid.Read<dynamic>().FirstOrDefault());
+                        returnobj.Add(grid.Read<dynamic>().SingleOrDefault());
                     }
                 }
                 return result;
+
+
+
+
+            }
+        }
+
+
+        public IEnumerable<object> ExecuteReaderMul<T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class
+        {
+
+            returnobj = new List<object>();
+            using (var _connection = GetDbConnection())
+            {
+
+                //List<ParamterTemplate> listparms = parameters.OfType<ParamterTemplate>().ToList();
+                var parms = new DynamicParameters();
+                //listparms.ForEach(a =>
+                //{
+                //    if (a.ParameterDirection == "Input")
+                //    {
+                //        parms.Add(a.ParamterName, a.ParamterValue, null, ParameterDirection.Input);
+                //    }
+                //    else
+                //    {
+                //        DbType t = DbTypeConverter.TypeToDbType(a.ParameterType);
+                //        parms.Add(a.ParamterName, null, t, ParameterDirection.Output);
+                //    }
+
+                //});
+
+                var grid = _connection.QueryMultiple(query, parms, commandType: CommandType.StoredProcedure);
+                //var result = _connection.Query<TResult>(query, parms, commandType: CommandType.StoredProcedure).ToList();
+
+                List<object> lstResults = new List<object>();
+                while (!grid.IsConsumed)
+                {
+                    lstResults.Add(grid.Read().ToList());
+                }
+
+                //foreach (var x in listparms)
+                //{
+                //    if (x.ParameterDirection == "Output")
+                //    {
+
+                //        returnobj.Add(grid.Read<dynamic>().SingleOrDefault());
+                //    }
+                //}
+                return lstResults;
 
 
 

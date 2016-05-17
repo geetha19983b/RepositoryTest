@@ -110,5 +110,11 @@ namespace Infosys.FoundationLibrary.DataAccess.GenericAbstract
         {
             throw new NotImplementedException();
         }
+
+
+        public IEnumerable<object> ExecuteReaderMul<T>(string query, List<T> parameters, out List<object> returnobj, string type = null) where T : class
+        {
+            throw new NotImplementedException();
+        }
     }
 }
