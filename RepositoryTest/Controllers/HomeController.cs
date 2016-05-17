@@ -28,6 +28,9 @@ namespace RepositoryTest.Controllers
             //efrepobj.ExecuteScalar("update [Employees] set EmpAlias3 = 'John' where EmpId = 1");
 
             IEnumerable<Employee> emps = unitOfWork.EfRepDA.ExecuteReader<Employee>("spGetAllEmployees1", null);
+           // emps = unitOfWork.EfRepDA.ExecuteReader<Employee>("GetEmp {0}", 1);
+            var result = unitOfWork.EfRepDA.GetAll<GetEmp_Result>().ToList();
+            
             var mods = emps;
             ViewBag.EmpCount = unitOfWork.EfRepDA.ExecuteScalar<int>("select count(*) from Employee", null);
             return View(mods);

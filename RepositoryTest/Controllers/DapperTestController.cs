@@ -18,23 +18,56 @@ namespace RepositoryTest.Controllers
         // GET: /DapperTest/
         public ActionResult Index()
         {
-            //IEnumerable<Employee> emps = dapperobj.ExecuteReader<Employee>("spGetAllEmployees1", null);
-          
+           // IEnumerable<Employee> emps = dapperobj.ExecuteReader<Employee>("spGetAllEmployees1", null);
 
-            List<ParamterTemplate> parms = new List<ParamterTemplate>();
-            parms.Add(new ParamterTemplate("EmpId", "1",typeof(System.Int32),"Input"));
-            parms.Add(new ParamterTemplate("RecordCount", "0", typeof(System.Int32), "Output"));
+
+            //List<ParamterTemplate> parms = new List<ParamterTemplate>();
+            //parms.Add(new ParamterTemplate("EmpId", "1", typeof(System.Int32), "Input"));
+            //parms.Add(new ParamterTemplate("RecordCount", "0", typeof(System.Int32), "Output"));
+
+            //List<object> returnobj = new List<object>();
+
+
+            //IEnumerable<Employee> emps = dapperobj.ExecuteReader<Employee, ParamterTemplate>("GetEmp", parms, out returnobj, "SP");
+
+
+            dapperobj = new DapperDataAccess("SQLConnStr");
+
+            //IEnumerable<object> empsobj = dapperobj.ExecuteReaderMul<ParamterTemplate>("GetEmpMul", parms, out returnobj, "SP");
+
+            //foreach(var x in empsobj)
+            //{
+                
+                
+            //}
+
 
             List<object> returnobj = new List<object>();
+            List<ParamterTemplate> parms = new List<ParamterTemplate>();
 
-           
-            IEnumerable<Employee> emps = dapperobj.ExecuteReader<Employee,ParamterTemplate>("GetEmp", parms, out returnobj, "SP");
+            parms.Add(new ParamterTemplate("PageIndex", 1, typeof(System.Int32), "Input"));
+            //parms.Add(new ParamterTemplate("PageSize", "PageSize", typeof(System.Int32), "Input"));
+            parms.Add(new ParamterTemplate("PageSize", 500, typeof(System.Int32), "Input"));
+            parms.Add(new ParamterTemplate("TableName", "[CREW_AddonCode] where RegionId=", typeof(System.String), "Input"));
+            //parms.Add(new ParamterTemplate("RegionID", "RegionID", typeof(System.String), "Input"));
+            parms.Add(new ParamterTemplate("RegionID", "R0010", typeof(System.String), "Input"));
+            parms.Add(new ParamterTemplate("SelectCols", "ROW_NUMBER() OVER (ORDER BY Code1, Code2 ASC)AS RowNumber,code1,code2,effectivedate,terminationdate,ruleoverridingmodifiers,AddonCodeid,Rationale", typeof(System.String), "Input"));
 
-            ViewBag.EmpCount = ((dynamic)returnobj[0]).RecordCount;
-            //ViewBag.EmpCount = returnobj.FirstOrDefault();
+            parms.Add(new ParamterTemplate("RecordCount", "0", typeof(System.Int32), "Output"));
 
-            //ViewBag.EmpCount = dapperobj.ExecuteScalar<int>("select count(*) from Employee", null);
-            return View(emps);
+
+            var retval = dapperobj.ExecuteReader<AddonCodeDetails, ParamterTemplate>("GetCodeRules_Pagination", parms, out returnobj, "SP");
+            List<AddonCodeDetails> result = retval.Cast<AddonCodeDetails>().ToList();
+
+            ViewBag.EmpCount = ((dynamic)returnobj[0]).@RecordCount;
+           // ViewBag.EmpCount = returnobj.FirstOrDefault();
+
+           // ViewBag.EmpCount = dapperobj.ExecuteScalar<int>("select count(*) from Employee", null);
+            //return View(emps);
+            return View();
+
+
+
         }
         public ActionResult Create()
         {
