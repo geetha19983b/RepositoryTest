@@ -28,8 +28,8 @@ namespace RepositoryTest.Models
         }
     
         public virtual DbSet<Employee> Employees { get; set; }
-
-   
+        public virtual DbSet<Student> Students { get; set; }
+    
         public virtual ObjectResult<GetEmp_Result> GetEmp(Nullable<int> empId, ObjectParameter recordCount)
         {
             var empIdParameter = empId.HasValue ?
