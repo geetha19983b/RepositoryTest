@@ -24,6 +24,15 @@ namespace RepositoryTest.Controllers
         //}
         //
         // GET: /Home/
+
+        public HomeController()
+        {
+            //unitOfWork.EfRepDA.DbContext.ChangeDatabase(
+            //    initialCatalog: "HomeCinema",
+            //    integratedSecuity: true,
+            //    dataSource: @"(localdb)\mssqllocaldb" // could be ip address 100.23.45.67 etc
+            //);
+        }
         public ActionResult Index()
         {
 
@@ -43,11 +52,11 @@ namespace RepositoryTest.Controllers
             ObjectParameter recordCount = new ObjectParameter("RecordCount", typeof(int?));
             var result = unitOfWork.EfRepDA.DbContext.GetEmp(1, recordCount).ToList();
 
-           
-            
+
+
             ViewBag.EmpCount = recordCount.Value;
             return View(result);
-            
+
 
         }
         public ActionResult Create()
