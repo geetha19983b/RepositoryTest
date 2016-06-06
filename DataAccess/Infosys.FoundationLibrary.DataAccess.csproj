@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GenericAbstract\ConnectionTools.cs" />
     <Compile Include="GenericAbstract\DataContextExtensions.cs" />
     <Compile Include="GenericAbstract\DbTypeConverter.cs" />
     <Compile Include="GenericAbstract\EfDataAccess.cs" />
