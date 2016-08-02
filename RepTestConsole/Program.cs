@@ -12,144 +12,128 @@ using System.Transactions;
 using EntityFramework.Utilities;
 namespace RepTestConsole
 {
+
+
     class Program
     {
-        
-        static void Main(string[] args)
-        {
-            //EFBulkInsert();
-            EFUtilities();
-
-
-        }
-        private static List<Student> CreateStudents()
-        {
-            var students = new List<Student>();
-            for (int i = 0; i < 1000000; i++)
+         private static List<rules> rulelist = new List<rules>
             {
-                var student = new Student {StudentId = i, Name = Guid.NewGuid().ToString() };
-                students.Add(student);
-            }
-            return students;
-        }
-        private static void EFUtilities()
-        {
-            IDbFactory<SampleEntities> dbFactory = new DbFactory<SampleEntities>();
-            IUnitOfWork<SampleEntities> unitOfWork = new UnitOfWork<SampleEntities>(dbFactory);
-            Stopwatch sw = new Stopwatch();
-            var students = CreateStudents();
-
-
-
-            sw.Restart();
-            using (var ctx = unitOfWork.EfRepDA.DbContext)
-            {
-                using (var transactionScope = new TransactionScope())
+                new rules()
                 {
-                    EFBatchOperation.For(ctx, ctx.Students).InsertAll(students);
-                    sw.Stop();
-
-                    Console.WriteLine(
-                        "Added 100000 entities in {0}", sw.Elapsed.ToString());
-
-                    sw.Restart();
-                    //int recrdinstrd = ctx.SaveChanges();
-                    transactionScope.Complete();
-                    sw.Stop();
-
-                   // Console.WriteLine(
-                    //     "Saved {0} entities in {1}", recrdinstrd, sw.Elapsed.ToString());
-                }
-            }
-        }
-        private static void EFBulkInsert()
-        {
-            try
-            {
-
-                IDbFactory<SampleEntities> dbFactory = new DbFactory<SampleEntities>();
-                IUnitOfWork<SampleEntities> unitOfWork = new UnitOfWork<SampleEntities>(dbFactory);
-                Stopwatch sw = new Stopwatch();
-                var students = CreateStudents();
-
-
-
-                sw.Restart();
-                //AddRange rulez, no need for db.Configuration.AutoDetectChangesEnabled = false;
-                using (var ctx = unitOfWork.EfRepDA.DbContext)
+                    Code1 = "c1",Code2 = "c2"
+                },
+                new rules()
                 {
-                    using (var transactionScope = new TransactionScope())
-                    {
-                        var options = new BulkInsertOptions
-                        {
-                            EnableStreaming = true,
-                        };
-                        ctx.BulkInsert(students, options);
-
-                        // db.Students.AddRange(students);
-                        sw.Stop();
-
-                        Console.WriteLine(
-                            "Added 100000 entities in {0}", sw.Elapsed.ToString());
-
-                        sw.Restart();
-                        int recrdinstrd = ctx.SaveChanges();
-                        transactionScope.Complete();
-                        sw.Stop();
-
-                        Console.WriteLine(
-                             "Saved {0} entities in {1}", recrdinstrd, sw.Elapsed.ToString());
-                        
-                    }
+                    Code1 = "c3",Code2="c4"
                 }
 
-                Console.ReadKey();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message.ToString());
-            }
-        }
-        private static void AddRange()
+
+            };
+
+         private static List<claimlines> clmlst = new List<claimlines>
+         {
+              new claimlines()
+             {
+                 claimid = "cid-1",line="01",cptcode="ca"
+             
+
+             },
+              new claimlines()
+             {
+                 claimid = "cid-1",line="04",cptcode="c1"
+             },
+             new claimlines()
+             {
+                 claimid = "cid-1",line="02",cptcode="c4"
+             
+
+             },
+             new claimlines()
+             {
+                 claimid = "cid-1",line="03",cptcode="c2"
+             }
+            
+             //new claimlines()
+             //{
+             //    claimid = "cid-1",line="02",cptcode="c1"
+             //},
+             //new claimlines()
+             //{
+             //    claimid = "cid-4",line="01",cptcode="c0"
+             //},
+             // new claimlines()
+             //{
+             //    claimid = "cid-4",line="02",cptcode="c4"
+             //}
+         };
+
+        static void main(string[] args)
         {
-              try
+            Console.WriteLine("input rules");
+            foreach(var x in rulelist)
             {
-              
-                IDbFactory<SampleEntities> dbFactory = new DbFactory<SampleEntities>();
-                IUnitOfWork<SampleEntities> unitOfWork = new UnitOfWork<SampleEntities>(dbFactory);
-                Stopwatch sw = new Stopwatch();
-                var students = CreateStudents();
+                Console.WriteLine(x.Code1 +"\t" +  x.Code2);
+            }
+            Console.WriteLine("claim lines");
+            foreach (var x in clmlst)
+            {
+                Console.WriteLine(x.claimid + "\t" + x.line + "\t" + x.cptcode);
+            }
 
+           
+            var result = (from x in rulelist
+                          from y in clmlst
+                          where x.Code1 == y.cptcode || x.Code2 == y.cptcode
+                          select new { x.Code1,x.Code2, y.claimid,y.line,y.cptcode }).ToList();
+            Console.WriteLine("result");
+            foreach(var res in result)
+            {
 
+                Console.WriteLine(res);
+                Console.WriteLine();
+            }
+
+            var grupitems = result.GroupBy(x => new { x.Code1, x.Code2 }).ToList();
+
+            var subgrups = grupitems.Where(g => g.Count()  > 1)
+                .Select(x => new{a = x.Key,b= x.ToList(),c=string.Join<string>(",",x.ToList().Select(c => c.cptcode))});
+            //string op="";
+            foreach(var i in subgrups)
+            {
+              // op = string.Join<string>(",", i.b.Select(x => x.cptcode));
+                var values = i.a.Code1 + "," + i.a.Code2 ;
+                var values1 = i.a.Code2 + "," + i.a.Code1;
+                Console.WriteLine(values + values1);
+                Console.WriteLine(i.c);
+                //var values = RuleOverridingModifier.Select(x => ";" + x + ";");
+               if(i.c.Contains(values) || i.c.Contains(values1))
+               {
+                   i.b.ForEach(x => Console.WriteLine(x.claimid + x.Code1 + x.Code2 + x.cptcode + x.line));
+               }
+               // res = res.Where(r => values.Any(c => (";" + r.RuleOverridingmodifiers + ";").Contains(c)));
                 
-                sw.Restart();
-                //AddRange rulez, no need for db.Configuration.AutoDetectChangesEnabled = false;
-                unitOfWork.EfRepDA.DbContext.Configuration.AutoDetectChangesEnabled = false;
-                unitOfWork.EfRepDA.DbContext.Configuration.ValidateOnSaveEnabled = false;
-                unitOfWork.EfRepDA.DbContext.Students.AddRange(students);
-
-                // db.Students.AddRange(students);
-                sw.Stop();
-
-                Console.WriteLine(
-                    "Added 100000 entities in {0}", sw.Elapsed.ToString());
-
-                sw.Restart();
-                int recrdinstrd = unitOfWork.EfRepDA.DbContext.SaveChanges();
-                sw.Stop();
-
-                Console.WriteLine(
-                     "Saved {0} entities in {1}", recrdinstrd, sw.Elapsed.ToString());
-
-                unitOfWork.EfRepDA.DbContext.Configuration.AutoDetectChangesEnabled = true;
-                unitOfWork.EfRepDA.DbContext.Configuration.ValidateOnSaveEnabled = true;
-                Console.ReadKey();
             }
-            catch(Exception ex)
-            {
-                Console.WriteLine(ex.Message.ToString());
-            }
+
+           // Console.WriteLine(op);     
+          
+
+
+           
+            
 
         }
+        
+    }
+    class rules
+    {
+        public string Code1 { get; set; }
+        public string Code2 { get; set; }
+    }
+    class claimlines
+    {
+        public string claimid { get; set; }
+        public string line { get; set; }
+        public string cptcode { get; set; }
     }
 }
+       

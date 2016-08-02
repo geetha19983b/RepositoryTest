@@ -31,14 +31,8 @@ warning 6002: The table/view 'Sample.dbo.Student' does not have a primary key de
           <Parameter Name="RecordCount" Type="int" Mode="InOut" />
         </Function>
         <EntityContainer Name="SampleModelStoreContainer">
-          <EntitySet Name="Employee" EntityType="Self.Employee" store:Type="Tables" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [Employee].[EmpId] AS [EmpId], 
-    [Employee].[EmpName] AS [EmpName], 
-    [Employee].[EmpAlias1] AS [EmpAlias1], 
-    [Employee].[EmpAlias2] AS [EmpAlias2], 
-    [Employee].[EmpAlias3] AS [EmpAlias3]
-    FROM [dbo].[Employee] AS [Employee]</DefiningQuery>
+          <EntitySet Name="Employee" EntityType="Self.Employee" store:Type="Tables" Schema="dbo">
+           
           </EntitySet>
           <EntitySet Name="Student" EntityType="Self.Student" store:Type="Tables" Schema="dbo">
            
